@@ -5,16 +5,139 @@ The Text Extraction to JSON File project is a sophisticated Python solution desi
 Purpose and Scope
 The project aims to provide a robust and scalable solution for processing documents in various formats (PDF, HTML) and converting them into a structured, standardized format (JSON). Key fields extracted from these documents can include:
 
-Bid Numbers
-Titles
-Due Dates
-Submission Types
-Contact Information
-Payment Terms
-Product Specifications
-By using this solution, users can significantly reduce the manual effort involved in parsing and organizing complex documents. The goal is to create a flexible framework capable of adapting to various document structures and efficiently extracting the necessary fields.
+# Bid Data Extraction Tool
+
+This project is designed to extract and structure data from bid-related PDF and HTML documents. It processes textual data using Python libraries such as `pdfplumber` and `BeautifulSoup`, with additional parsing logic powered by regex patterns. The extracted data is saved in a JSON format for easy analysis and downstream processing.
+
+## Features
+
+- **PDF Extraction**: Reads and extracts text from PDF documents using `pdfplumber`.
+
+- **HTML Parsing**: Extracts structured text from HTML files using `BeautifulSoup`.
+
+- **Regex-based Parsing**: Identifies and extracts key fields of interest using regular expressions.
+
+- **JSON Output**: Outputs extracted data in a structured JSON format.
+
+## Key Fields Extracted
+
+The following fields are extracted from the documents:
+
+- **Bid Metadata**:
+
+  - PORFP Number
+
+  - eMMA Project Number
+
+  - PORFP Type
+
+  - Functional Area(s)
+
+  - Manufacturer Name
+
+  - Small Business Reserve
+
+  - Minority Business Enterprise (MBE) Goal
+
+  - Proposal Due Date
+
+  - Questions Due Date
+
+  - Place of Performance
+
+- **Bid Details**:
+
+  - Bid Submission Instructions
+
+  - Security Requirements
+
+  - Evaluation Criteria
+
+- **Contact Information**:
+
+  - Agency POC Name
+
+  - Agency POC Email
+
+- **Product Specifications**:
+
+  - Product Name
+
+  - Product Description
+
+  - Model Number
+
+  - Quantity
+
+## Prerequisites
+
+Ensure the following are installed on your system:
+
+- Python 3.7 or higher
+
+- pip (Python package manager)
+
+## Installation
+
+1. Clone this repository or download the code files.
+
+2. Navigate to the project directory.
+
+3. Install the required Python dependencies:
+
+   pip install pdfplumber beautifulsoup4 lxml
+
+Detailed Code Description
+Core Functions
+
+1. extract_content(file_path)
+
+Identifies whether the file is a PDF or HTML based on the file extension.
+Routes the file to either extract_from_pdf or extract_from_html for processing.
+
+2. extract_from_pdf(file_path)
+
+Opens the PDF using pdfplumber.
+Extracts text from each page and concatenates it into a single string.
+Handles exceptions for corrupted or unreadable PDFs.
+
+3. extract_from_html(file_path)
+
+Reads the HTML file using BeautifulSoup with the lxml parser.
+Extracts and cleans text while maintaining structural integrity.
+
+4. Regex Patterns
+
+Predefined regex patterns are used to extract specific fields such as PORFP Number, Manufacturer Name, and Proposal Due Date.
+Patterns are modular and can be updated to accommodate new fields or formats.
+
+5. process_pdf(pdf_path)
+
+Extracts text from the PDF using extract_from_pdf.
+Matches the text against regex patterns to extract structured fields.
+Prints the extracted data in a JSON-like format.
+
+6. process_html_to_json(html_path, output_json_path)
+
+Reads and processes an HTML file using extract_from_html.
+Applies regex patterns to extract structured fields.
+Saves the extracted data into a JSON file at the specified path.
+
+Error Handling
+
+File Not Found: Checks if the file exists at the specified path and throws an appropriate error message.
+Unsupported Formats: Handles unsupported file formats gracefully with descriptive error messages.
+Content Extraction Errors: Provides detailed error messages for issues encountered during text extraction.
+
+Example Workflow
+
+Place your PDF or HTML files in a directory.
+Update the pdf_path or html_path variables in the script with the file paths.
+Run the script to process the files and extract data.
+Check the console for JSON output or the output file for saved data.
 
 Core Functionalities
+
 1. PDF and HTML Parsing: The project supports both PDF and HTML document formats. It leverages specialized libraries such as PyPDF2, pdfplumber for PDF parsing, and BeautifulSoup for HTML parsing. These libraries enable accurate extraction of text content from different document layouts, including those with tables, images, and embedded text.
 
 2. Data Extraction: Data is extracted using customizable extraction rules defined in the config.py file. The script utilizes regular expressions (regex) to identify specific data patterns within the raw document text. These regex patterns are highly flexible, allowing the extraction logic to be easily adapted to different types of documents and varying formats.
@@ -29,21 +152,13 @@ Core Functionalities
 
 
 text_extraction_jason_file/
-
 ├── README.md                # Project overview and technical documentation
-
 ├── requirements.txt         # Python dependencies required to run the project
-
 ├── extract_data.py          # Main script responsible for extracting data
-
 ├── data_parser.py           # Utility functions for parsing raw text
-
 ├── config.py                # Configuration for field extraction rules and regex patterns
-
 ├── sample_data/             # Folder containing sample input files (PDF, HTML)
-
 ├── output/                  # Folder where JSON output is stored
-
 └── tests/                   # Unit tests validating the extraction process
 
 Detailed Breakdown
@@ -94,15 +209,10 @@ config.py serves as the central location for configuring the extraction process.
 Field Definitions: Each field to be extracted is defined by a regex pattern. For example, a pattern to extract "Bid Number" might be defined as:
 
 FIELD_CONFIG = {
-
     "Bid Number": r"Bid Number:\s*(\d+)",
-    
     "Title": r"Title:\s*(.*?)\n",  # Non-greedy match
-    
     "Due Date": r"Due Date:\s*(\d{2}/\d{2}/\d{4})",
-    
     "Contact Info": r"Contact:\s*(\S+@\S+\.\S+)",
-    
     ...
 }
 
