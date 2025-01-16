@@ -29,6 +29,7 @@ Core Functionalities
 
 
 text_extraction_jason_file/
+
 ├── README.md                # Project overview and technical documentation
 
 ├── requirements.txt         # Python dependencies required to run the project
@@ -93,6 +94,7 @@ config.py serves as the central location for configuring the extraction process.
 Field Definitions: Each field to be extracted is defined by a regex pattern. For example, a pattern to extract "Bid Number" might be defined as:
 
 FIELD_CONFIG = {
+
     "Bid Number": r"Bid Number:\s*(\d+)",
     
     "Title": r"Title:\s*(.*?)\n",  # Non-greedy match
